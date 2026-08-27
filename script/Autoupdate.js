@@ -26,6 +26,14 @@ const QUELLEN = [
     branch: 'main',
     pfad: 'resources/balance/liga_ai.json',
     archivDatei: 'liga_ai.json'
+  },
+  {
+    name: 'Origin',
+    tab: 'Origin',
+    repo: 'JemandAnderes/Origin-Mod',
+    branch: 'main',
+    pfad: 'resources/balance/origin.json',
+    archivDatei: 'origin.json'
   }
 ];
 
@@ -182,9 +190,11 @@ function rasterLesen_(tab) {
   const zeilen = {};
   const namen = tab.getRange(KOPF_ZEILEN + 1, 1,
                              Math.max(1, letzteZeile - KOPF_ZEILEN), 1).getValues();
+  // ERSTES Vorkommen gewinnt: Namen wie "Mangonel" stehen weiter unten
+  // nochmal in Nebentabellen, gemeint ist aber die Haupttabelle.
   for (let r = 0; r < namen.length; r++) {
     const v = String(namen[r][0] || '').trim();
-    if (v) zeilen[v] = KOPF_ZEILEN + 1 + r;
+    if (v && !zeilen[v]) zeilen[v] = KOPF_ZEILEN + 1 + r;
   }
   return { spalten: spalten, zeilen: zeilen };
 }
